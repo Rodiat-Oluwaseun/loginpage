@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
 padding: 4em;
 border: 1px solid #000;
 background-size: cover;
-background-image: url(${img});
+// background-image: url(${img});
 background-position: center;
 height: 100vh; 
 display: flex;
@@ -13,11 +13,10 @@ justify-content: center;
 align-items: center;
 
 .form{
-    background: darkgray;
+   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
   .input-box{
-    position: relative;
     background: black;
     width: 100%;
     height: 50px;
@@ -31,17 +30,18 @@ align-items: center;
     padding: 20px 45px 20px 20px;
     
 }
+
   .icon{
-    position: relative;
-    right:40px;
-    top: 50%;
+    position: absolute;
+    right:-120px;
+   //  top: 100%;
     transform: translative(-20%);
     font-size : 16px;
 
  }
 
  .checkBox{
-    // display: flex;
+    display: flex;
     justify-content:flex-end;
     font-size: 13px;
     margin: -15px 0 15px;
@@ -53,8 +53,19 @@ align-items: center;
     border: none;
     outline: none;
     border-radius:40px;
+    margin-bottom: 10px;
 
  }
+ .email {
+   float:left;
+   margin-right:20px
+ }
+
+.password{
+   float:left;
+   margin-right:20px
+
+}
 
     @media (max-width: 1000px) {
     }

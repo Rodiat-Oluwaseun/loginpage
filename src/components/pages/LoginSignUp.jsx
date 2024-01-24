@@ -1,99 +1,128 @@
-import React from "react";
+import React from 'react';
 import { useState } from 'react';
 import {Wrapper } from "../LoginStyle";
 import { FaUser, FaLock} from "react-icons/fa";
 
 function LoginSignUp(){
-const [error ,setError] = useState(null);
-const [state , setState] = useState({
-  email: '',
-  password: '',
-});
+        // State to manage form input values
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isValidEmail, setIsValidEmail] = useState(true);
+  const [isValidPassword, setIsValidPassword] = useState(true);
+  const [error , setErrorMessage]= useState('');
+  const [loggedIn ,setLoggedIn] =useState('');
 
-const validateEmail = () =>{
-  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-};
-const handleChange = (e) => {
-  const {id ,value} = e.target;
-  setState((e) => ({
-    // ...prevState,
-    [id]: value,
-  }));
+  //function to handle email validation
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+    validateEmail(newEmail);
+  };
 
-}
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    validatePassword(newPassword);
+  };
 
-const handleSubmit = (e) =>{
-  e.preventDefault();
-  if (!validateEmail(state.email)){
-    setError('Invalid Email');
-  }
-   if(state.password.length < 8 ){
-    setError('Password must be at least 8character long');
+  const validateEmail = (value) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValid = emailRegex.test(value);
+    setIsValidEmail(isValid);
+  };
 
-  }
-  if(!error == !password){
+  const validatePassword = (value) => {
+    // Simple password validation: at least 6 characters
+    const isValid = value.length >= 8;
+    setIsValidPassword(isValid);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Perform additional actions if both email and password are valid
+
+    if (email && password) {
+      // Perform login logic (e.g., send data to server, check credentials)
+      console.log('Login successful!');
+      setLoggedIn (true);
+    } else {
+      console.log('Please enter both username and password.');
+      setErrorMessage ('Please enter both username and password.');
+    }
+
+    if (isValidEmail && isValidPassword) {
+      // Your login logic here
+      console.log('Login successful!');
     
-  }
-}
-return(
-  <div>
-     <Wrapper >
-   
-   <div className="login-page text-center">
-   {/* {error && <div style={{ color: 'red' }}>{error}</div>} */}
+    } else {
+      console.log('Login failed. Please check your credentials.');
+    }
+
+    setEmail('');
+    setPassword('');
+  };
+
+  return (
+    <Wrapper>
+     <div className='login-page text-center'>
       <h2>Welcome to Amplify Studio</h2>
-      <form onSubmit={handleSubmit}
-        className='form'
-        id="form-holder"
-      >
+      {loggedIn && <p className="Success" style={{ color: 'green' }}>Login successful!</p>}
+      <form onSubmit={handleSubmit} className='form container'>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+    <div className='input-container'>
+    <label className="email mt-5">Email: </label>
+
+      <div className='input-with-icon'>
+      <input
+      type="email"
+      id="email"
+      placeholder='Email'
+      className='input-box'
+      value={email}
+      onChange={handleEmailChange}
+    />
+    {!isValidEmail && (
+      <p style={{ color: 'red' }}>Please enter a valid email address.</p>
+    )}
+        <FaUser  className='input-icon'/>
         
-        <label>
-          Email:</label>
-          <input
-            type="text"
-            placeholder='Email'
-            className='input-box'
-            value={state.email}
-            onChange= {handleChange}
-          />
-        <FaUser  className='icon'/>
+    
+      </div>
+    
+
+    </div>
+      
+       <label className="password">Password:</label>
+       <input
+         type="password"
+         id="password"
+         className="input-box"
+         placeholder='Password'
+         value={password}
+         onChange={handlePasswordChange}
+       />
+       {!isValidPassword && (
+         <p style={{ color: 'red' }}>
+           Password must be at least 6 characters long.
+         </p>
+       )}
+       <FaLock  className='icon'/>
         <br />
-        <label>
-          Password:
-        </label>
-          <input
-            type="password"
-            className='input-box'
-            placeholder='Password'
-            value={state.password}
-            onChange= {handleChange}
-          />
-        
-        <FaLock className='icon' />
-       
-        <br />
-        <label >
-        <input type="checkbox"  className='checkBox'/>Remember me
-           </label>
-          <a href=""> Forgot password</a>
-        
-        <div className='sign-up'>
-        <p>Don't have an account ? <a href="">Sign Up</a></p>
-        </div>
-        <button type="submit" className='submit'>Login</button>
-       
-      </form>
+    <div htmlFor="">
+      <input type="checkbox" /> Remember me
+      <a href="">Forgot Password</a>
+    </div>
+    <div>
+      <p>Don't have an account?<a href="">Sign Up</a></p>
     </div>
 
-  
+     <button type="submit" className='submit'>Login</button>
+   </form>
+     </div>
     </Wrapper>
-
-
-  </div>
-)
+  );
 
 }
 
-
-export default LoginSignUp
+export default LoginSignUp;
